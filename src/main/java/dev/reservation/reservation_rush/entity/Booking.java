@@ -33,12 +33,13 @@ public class Booking extends BaseTime {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_package_id", nullable = false)
-    @Comment("여행 패키지 ID")
+    @Comment("여행 패키지")
     private TravelPackage travelPackage;
     
-    @Column(name = "user_id", nullable = false)
-    @Comment("사용자ID")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @Comment("사용자")
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
