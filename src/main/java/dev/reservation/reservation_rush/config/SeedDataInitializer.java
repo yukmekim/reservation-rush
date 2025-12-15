@@ -25,7 +25,7 @@ public class SeedDataInitializer implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         log.info("🌱 Starting seed data initialization...");
 
-        if (userRepository.count() < 0) {
+        if (userRepository.count() > 0) {
             log.info("✅ Seed data already exists. Skipping initialization");
             return;
         }
