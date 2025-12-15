@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "travel_package")
+@Table(name = "travel_packages")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 public class TravelPackage extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Comment("여행 패키지 ID")
     private Long id;
 
     @Column(name = "name", nullable = false)
