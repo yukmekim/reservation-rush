@@ -62,12 +62,12 @@ public class SeedDataInitializer implements ApplicationRunner {
                 .build();
 
         TravelPackage busan = TravelPackage.builder()
-                .name("부산 2박3일 해변 여행")
-                .description("부산의 바다와 야경을 즐기는 여행")
-                .location("부산")
+                .name("일본 다카마쓰 3박4일 우동 투어")
+                .description("하루 20끼 가능한 20끼 형들에게 추천, 우동 부수러 갈 사람")
+                .location("다카마쓰")
                 .startDate(LocalDateTime.of(2025, 3, 20, 10, 0))
                 .endDate(LocalDateTime.of(2025, 3, 22, 17, 0))
-                .price(new BigDecimal("300000"))
+                .price(new BigDecimal("800000"))
                 .totalSeats(20)
                 .availableSeats(20)
                 .build();
