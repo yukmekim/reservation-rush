@@ -2,6 +2,8 @@ package dev.reservation.reservation_rush.entity;
 
 import org.hibernate.annotations.Comment;
 
+import dev.reservation.reservation_rush.common.exception.BusinessException;
+import dev.reservation.reservation_rush.common.exception.ErrorCode;
 import dev.reservation.reservation_rush.enums.BookingStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,14 +50,14 @@ public class Booking extends BaseTime {
 
     public void confirm() {
         if (this.status == BookingStatus.CANCELLED) {
-            throw new IllegalArgumentException("이미 취소된 예약은 확정할 수 없습니다.");
+            throw new BusinessException(ErrorCode.CANNOT_CONFIRM_CANCELLED_BOOKING);
         }
         this.status = BookingStatus.CONFIRMED;
     }
 
     public void cancel() {
         if (this.status == BookingStatus.CANCELLED) {
-            throw new IllegalArgumentException("이미 취소된 예약입니다.");
+            throw new BusinessException(ErrorCode.ALREADY_CANCELLED_BOOKING);
         }
         this.status = BookingStatus.CANCELLED;
     }

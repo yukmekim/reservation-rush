@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Comment;
 
+import dev.reservation.reservation_rush.common.exception.BusinessException;
+import dev.reservation.reservation_rush.common.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -72,14 +74,14 @@ public class TravelPackage extends BaseTime {
 
     public void increaseSeats() {
         if (this.availableSeats >= this.totalSeats) {
-            throw new IllegalArgumentException("예약 가능 좌석 수가 최대 좌석 수를 초과할 수 없습니다.");
+            throw new BusinessException(ErrorCode.SEAT_OVERFLOW);
         }
         this.availableSeats++;
     }
 
     private void validateAvailableSeats() {
         if (this.availableSeats <= 0) {
-            throw new IllegalArgumentException("예약 가능한 좌석이 없습니다.");
+            throw new BusinessException(ErrorCode.SOLD_OUT_PACKAGE);
         }
     }
 }
