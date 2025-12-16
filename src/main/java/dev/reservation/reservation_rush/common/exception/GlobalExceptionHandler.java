@@ -36,10 +36,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response<Void>> handleValidationException(MethodArgumentNotValidException e) {
         ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+        
+        // DTO에 적은 message 중 첫 번째 것을 가져옴
+        String detailMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        
+        // 없을 경우 기본 메시지 사용
+        if (detailMessage == null) {
+            detailMessage = errorCode.getMessage();
+        }
 
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(Response.error(errorCode.getCode(), errorCode.getMessage()));
+                .body(Response.error(errorCode.getCode(), detailMessage));
     }
 
     /**
