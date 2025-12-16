@@ -1,5 +1,7 @@
 package dev.reservation.reservation_rush.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,5 +42,11 @@ public class BookingService {
                 .build();
 
         return BookingResponse.from(bookingRepository.save(booking));
+    }
+
+    public List<BookingResponse> getBookings(Long packageId) {
+        return bookingRepository.findAllByTravelPackageId(packageId).stream()
+                .map(BookingResponse::from)
+                .toList();
     }
 }

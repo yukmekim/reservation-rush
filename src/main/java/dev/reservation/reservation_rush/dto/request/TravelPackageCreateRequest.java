@@ -34,7 +34,7 @@ public record TravelPackageCreateRequest(
 
     @NotNull(message = "총 좌석 수는 필수입니다.")
     @Positive(message = "총 좌석 수는 0보다 커야 합니다.")
-    int totalSeats
+    Integer totalSeats
 ) {
     public TravelPackage toEntity() {
         return TravelPackage.builder()
