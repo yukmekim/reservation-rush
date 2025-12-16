@@ -43,10 +43,11 @@ public class Booking extends BaseTime {
     @Comment("사용자")
     private User user;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     @Comment("예약 상태")
-    private BookingStatus status;
+    private BookingStatus status = BookingStatus.PENDING;
 
     public void confirm() {
         if (this.status == BookingStatus.CANCELLED) {
