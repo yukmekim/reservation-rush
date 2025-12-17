@@ -44,6 +44,25 @@ public class BookingService {
         return BookingResponse.from(bookingRepository.save(booking));
     }
 
+    // 예약 생성 - 비관적 락 
+    @Transactional
+    public BookingResponse createBookingWithPessimisticLock(BookingCreateRequest request) {
+        User user = userRepository.findById(request.userId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        TravelPackage travelPackage = travelPackageRepository.findByIdWithLock(request.packageId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PACKAGE_NOT_FOUND));
+
+        travelPackage.decreaseSeats();
+
+        Booking booking = Booking.builder()
+                .user(user)
+                .travelPackage(travelPackage)
+                .build();
+
+        return BookingResponse.from(bookingRepository.save(booking));
+    }
+
     public List<BookingResponse> getBookings(Long packageId) {
         return bookingRepository.findAllByTravelPackageId(packageId).stream()
                 .map(BookingResponse::from)
