@@ -78,7 +78,7 @@ public class OptimisticLockTest {
     @Test
     @DisplayName("Optimistic Lock으로 32개 동시 요청 → 재시도 후 정확히 10개만 성공")
     void shouldPreventOverbookingWithOptimisticLock() throws InterruptedException {
-        int threadCount = 11;
+        int threadCount = 32;
         ExecutorService executorService = newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
