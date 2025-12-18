@@ -29,6 +29,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	implementation 'org.springframework.retry:spring-retry'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
 	// SpringDoc OpenAPI 3 (Swagger) - API 문서화
     implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
