@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,6 +63,11 @@ public class TravelPackage extends BaseTime {
     @Column(name = "total_seats", nullable = false)
     @Comment("총 좌석 수")
     private int totalSeats;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    @Comment("버전")
+    private Long version;
 
     public boolean isAvailable() {
         return availableSeats > 0;

@@ -25,6 +25,8 @@ public enum ErrorCode {
     ALREADY_CANCELLED_BOOKING(HttpStatus.BAD_REQUEST, "B001", "이미 취소된 예약입니다."),
     CANNOT_CONFIRM_CANCELLED_BOOKING(HttpStatus.BAD_REQUEST, "B002", "이미 취소된 예약은 확정할 수 없습니다."),
     BOOKING_NOT_FOUND(HttpStatus.NOT_FOUND, "B003", "예약을 찾을 수 없습니다."),
+    BOOKING_FAILED_AFTER_RETRIES(HttpStatus.INTERNAL_SERVER_ERROR, "B004", "예약 재시도 횟수를 초과했습니다."),
+    BOOKING_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "B005", "예약이 중단되었습니다."),
 
     // ========== User Errors (U) ==========
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U001", "사용자를 찾을 수 없습니다.");
