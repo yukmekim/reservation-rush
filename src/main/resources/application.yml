@@ -26,6 +26,10 @@ spring:
     username: sa
     password: 
 
+    redis:
+      host: localhost
+      port: 6479
+
   springdoc:
     api-docs:
       path: /api-docs
