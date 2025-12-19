@@ -11,6 +11,10 @@ public enum ErrorCode {
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C001", "잘못된 입력값입니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C002", "지원하지 않는 HTTP 메서드입니다."),
 
+    // ========== Redis Errors (R) ==========
+    LOCK_ACQUISITION_FAILED(HttpStatus.REQUEST_TIMEOUT, "R001", "락 획득에 실패했습니다"),
+    LOCK_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "R002", "락 획득 중 인터럽트가 발생했습니다"),
+
     // ========== Server Errors (S) ==========
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S001", "서버 내부 오류가 발생했습니다."),
 
