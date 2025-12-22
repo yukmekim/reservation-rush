@@ -16,4 +16,5 @@ jobs:
 
     steps:
       - run: |
-          echo "Redis available on 127.0.0.1:${{ job.services.redis.ports['6479'] }}"
+          echo "Redis available on 127.0.0.1:${{ job.services.redis.ports['6379'] }}"
+          redis-cli -h 127.0.0.1 -p ${{ job.services.redis.ports['6379'] }} ping
