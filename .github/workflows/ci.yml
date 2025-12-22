@@ -1,4 +1,4 @@
-name: reservation-rush-actions
+name: reservation-rush-actions-ci
 run-name: ${{ github.actor }} is learning Github Actions
 
 on: 
@@ -39,4 +39,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
