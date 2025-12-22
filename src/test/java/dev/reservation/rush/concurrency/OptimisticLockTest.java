@@ -1,4 +1,4 @@
-package dev.reservation.reservation_rush.concurrency;
+package dev.reservation.rush.concurrency;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,7 +1,7 @@
-package dev.reservation.reservation_rush.concurrency;
+package dev.reservation.rush.concurrency;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,17 +22,18 @@ import dev.reservation.rush.entity.User;
 import dev.reservation.rush.repository.BookingRepository;
 import dev.reservation.rush.repository.TravelPackageRepository;
 import dev.reservation.rush.repository.UserRepository;
-import dev.reservation.rush.service.BookingService;
 import dev.reservation.rush.service.TravelPackageService;
+import dev.reservation.rush.service.facade.BookingFacade;
 
 @SpringBootTest
-@DisplayName("Pessimistic Lock 동시성 제어")
-public class PessimisticLockTest {
+@DisplayName("Phase 2-3: Redis Distributed Lock 동시성 제어")
+class RedisDistributedLockTest {
+
     @Autowired
     private TravelPackageService travelPackageService;
 
     @Autowired
-    private BookingService bookingService;
+    private BookingFacade bookingFacade;
 
     @Autowired
     private TravelPackageRepository travelPackageRepository;
@@ -48,27 +49,23 @@ public class PessimisticLockTest {
 
     @BeforeEach
     void setUp() {
-        // 데이터 초기화
         bookingRepository.deleteAll();
         travelPackageRepository.deleteAll();
         userRepository.deleteAll();
 
-        // 테스트 사용자 생성
         User user = User.builder()
                 .name("테스트 사용자")
                 .build();
         userId = userRepository.save(user).getId();
 
-        // 테스트 패키지 생성 (좌석 10개)
         TravelPackageCreateRequest packageRequest = new TravelPackageCreateRequest(
                 "제주도 3박4일",
-                "Pessimistic Lock 테스트용 패키지",
+                "Redis Lock 테스트용 패키지",
                 "제주",
                 BigDecimal.valueOf(500000),
                 LocalDateTime.now().plusDays(10),
                 LocalDateTime.now().plusDays(13),
-                10 // 총 좌석 10개
-        );
+                10);
         TravelPackageResponse packageResponse = travelPackageService.createPackage(packageRequest);
         packageId = packageResponse.id();
 
@@ -80,11 +77,8 @@ public class PessimisticLockTest {
     }
 
     @Test
-    @DisplayName("Pessimistic Lock으로 32개 동시 요청 → 정확히 10개만 성공")
-    void shouldPreventOverbookingWithPessimisticLock() throws InterruptedException {
-        // Given
-        long startTime = System.currentTimeMillis();
-
+    @DisplayName("Redis 분산 락으로 32개 동시 요청 → 정확히 10개만 성공")
+    void shouldPreventOverbookingWithRedisLock() throws InterruptedException {
         int threadCount = 32;
         ExecutorService executorService = newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -92,19 +86,20 @@ public class PessimisticLockTest {
         AtomicInteger successCount = new AtomicInteger(0);
         AtomicInteger failCount = new AtomicInteger(0);
 
-        // When: 32개의 스레드가 동시에 예약 요청
-        System.out.println("=== Pessimistic Lock 테스트 시작 ===");
+        System.out.println("=== Redis Distributed Lock 테스트 시작 ===");
         System.out.println("동시 요청 수: " + threadCount);
         System.out.println();
 
         CountDownLatch startLatch = new CountDownLatch(1);
+
+        long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
                     startLatch.await();
                     BookingCreateRequest request = new BookingCreateRequest(userId, packageId);
-                    bookingService.createBookingWithPessimisticLock(request);
+                    bookingFacade.createBooking(request);
                     successCount.incrementAndGet();
                 } catch (Exception e) {
                     failCount.incrementAndGet();
@@ -118,7 +113,9 @@ public class PessimisticLockTest {
         latch.await();
         executorService.shutdown();
 
-        // Then: 결과 검증
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+
         TravelPackageResponse finalPackage = travelPackageService.getPackage(packageId);
         long actualBookingCount = bookingRepository.count();
 
@@ -128,25 +125,17 @@ public class PessimisticLockTest {
         System.out.println("DB 예약 건수: " + actualBookingCount + "건");
         System.out.println("최종 가용 좌석: " + finalPackage.availableSeats());
         System.out.println();
-
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        double throughput = threadCount / (totalTime / 1000.0);
-
         System.out.println("=== 성능 측정 ===");
         System.out.println("총 실행 시간: " + totalTime + "ms");
-        System.out.println("처리량: " + String.format("%.2f", throughput) + " req/sec");
+        System.out.println("처리량: " + String.format("%.2f", (double) threadCount / (totalTime / 1000.0)) + " req/sec");
         System.out.println();
 
-        // 검증: 정확히 10개만 예약 성공
         assertThat(actualBookingCount).isEqualTo(10);
         assertThat(successCount.get()).isEqualTo(10);
         assertThat(failCount.get()).isEqualTo(22);
-
-        // 검증: 가용 좌석 0
         assertThat(finalPackage.availableSeats()).isEqualTo(0);
 
-        System.out.println("Pessimistic Lock 동시성 제어 성공!");
+        System.out.println("✅ Redis Distributed Lock 동시성 제어 성공!");
         System.out.println("   - 오버부킹 방지: 10/10");
         System.out.println("   - Lost Update 방지: 좌석 정확히 0");
     }
