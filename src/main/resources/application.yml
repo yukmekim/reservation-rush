@@ -47,4 +47,4 @@ spring:
 logging:
   level:
     root: INFO
-    dev.reservation.reservation_rush: DEBUG
+    dev.reservation.rush: DEBUG

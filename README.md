@@ -70,7 +70,7 @@ Password: (비워두기)
 reservation-rush/
 ├── src/
 │   ├── main/
-│   │   ├── java/dev/reservation/reservation_rush/
+│   │   ├── java/dev/reservation/ruse/
 │   │   │   ├── entity/          # 엔티티
 │   │   │   ├── enums/            # enum 관리
 │   │   │   ├── repository/      # 데이터 액세스 계층

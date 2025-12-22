@@ -15,15 +15,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import dev.reservation.reservation_rush.dto.request.BookingCreateRequest;
-import dev.reservation.reservation_rush.dto.request.TravelPackageCreateRequest;
-import dev.reservation.reservation_rush.dto.response.TravelPackageResponse;
-import dev.reservation.reservation_rush.entity.User;
-import dev.reservation.reservation_rush.repository.BookingRepository;
-import dev.reservation.reservation_rush.repository.TravelPackageRepository;
-import dev.reservation.reservation_rush.repository.UserRepository;
-import dev.reservation.reservation_rush.service.BookingService;
-import dev.reservation.reservation_rush.service.TravelPackageService;
+import dev.reservation.rush.dto.request.BookingCreateRequest;
+import dev.reservation.rush.dto.request.TravelPackageCreateRequest;
+import dev.reservation.rush.dto.response.TravelPackageResponse;
+import dev.reservation.rush.entity.User;
+import dev.reservation.rush.repository.BookingRepository;
+import dev.reservation.rush.repository.TravelPackageRepository;
+import dev.reservation.rush.repository.UserRepository;
+import dev.reservation.rush.service.BookingService;
+import dev.reservation.rush.service.TravelPackageService;
 
 @SpringBootTest
 @DisplayName("Pessimistic Lock 동시성 제어")
