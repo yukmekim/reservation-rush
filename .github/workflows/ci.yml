@@ -4,6 +4,7 @@ run-name: ${{ github.actor }} is learning Github Actions
 on: 
   push:
     branches: main
+  workflow_dispatch: 
 
 jobs:
   test:
