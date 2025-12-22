@@ -111,7 +111,7 @@ public class BookingService {
      * Service Layer에서 트랜잭션 관리
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public BookingResponse createBookingWithRedisLock(BookingCreateRequest request) {
+    protected BookingResponse createBookingWithRedisLock(BookingCreateRequest request) {
         // Lock 획득 성공 → 예약 처리
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));

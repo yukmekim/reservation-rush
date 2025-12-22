@@ -1,4 +1,4 @@
-package dev.reservation.rush.service.facade;
+package dev.reservation.rush.service;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +10,6 @@ import dev.reservation.rush.common.exception.BusinessException;
 import dev.reservation.rush.common.exception.ErrorCode;
 import dev.reservation.rush.dto.request.BookingCreateRequest;
 import dev.reservation.rush.dto.response.BookingResponse;
-import dev.reservation.rush.service.BookingService;
 import lombok.RequiredArgsConstructor;
 
 @Component

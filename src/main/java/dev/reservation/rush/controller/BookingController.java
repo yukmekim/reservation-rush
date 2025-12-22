@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.reservation.rush.common.response.Response;
 import dev.reservation.rush.dto.request.BookingCreateRequest;
 import dev.reservation.rush.dto.response.BookingResponse;
+import dev.reservation.rush.service.BookingFacade;
 import dev.reservation.rush.service.BookingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,11 +25,12 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "예약", description = "예약 관리 API")
 public class BookingController {
     private final BookingService bookingService;
+    private final BookingFacade bookingFacade;
 
     @PostMapping
     @Operation(summary = "예약 생성", description = "새로운 예약을 생성합니다.")
     public ResponseEntity<Response<BookingResponse>> createBooking(@Valid @RequestBody BookingCreateRequest request) {
-        BookingResponse response = bookingService.createBooking(request);
+        BookingResponse response = bookingFacade.createBooking(request);
         return ResponseEntity.ok(Response.success(response, "예약에 성공했습니다."));
     }
 

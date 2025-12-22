@@ -22,8 +22,8 @@ import dev.reservation.rush.entity.User;
 import dev.reservation.rush.repository.BookingRepository;
 import dev.reservation.rush.repository.TravelPackageRepository;
 import dev.reservation.rush.repository.UserRepository;
+import dev.reservation.rush.service.BookingFacade;
 import dev.reservation.rush.service.TravelPackageService;
-import dev.reservation.rush.service.facade.BookingFacade;
 
 @SpringBootTest
 @DisplayName("Phase 2-3: Redis Distributed Lock 동시성 제어")
