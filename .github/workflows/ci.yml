@@ -15,6 +15,9 @@ jobs:
           - 6479:6379
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install redis-cli
         run: |
           sudo apt-get update
