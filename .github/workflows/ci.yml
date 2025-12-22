@@ -40,3 +40,11 @@ jobs:
 
       - name: Build
         run: ./gradlew clean build -x test
+
+      - name: Run tests with coverage
+        run: ./gradlew test jacocoTestReport
+
+      - name: Upload test results
+        uses: codecov/codecov-action@v4
+        with:
+          path: ./build/reports/jacoco/test/jacocoTestReport.xml
