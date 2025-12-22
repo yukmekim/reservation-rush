@@ -1,14 +1,12 @@
 package dev.reservation.reservation_rush.service;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.reservation.reservation_rush.common.exception.BusinessException;
@@ -32,8 +30,6 @@ public class BookingService {
     private final UserRepository userRepository;
     private final TravelPackageRepository travelPackageRepository;
     private final BookingRepository bookingRepository;
-
-    private final RedissonClient redissonClient;
 
     // 예약 생성 - 동시성 이슈
     @Transactional
@@ -106,47 +102,32 @@ public class BookingService {
                 .toList();
     }
 
-
-    // TODO - 트랜젝션 완료전에 락이 풀리는 문제 확인 수정 필요
-    @Transactional
+    /**
+     * [version.1] 
+     * Service Layer 내부에서 하나의 메서드에서 락 관리와 트랜잭션을 동시에 처리
+     * TODO 트랜잭션 완료전에 락이 풀리는 문제 확인 및 수정 필요
+     * [version.2]
+     * Facade Layer에서 redis 락 관리
+     * Service Layer에서 트랜잭션 관리
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public BookingResponse createBookingWithRedisLock(BookingCreateRequest request) {
-        String lockKey = "package:lock:" + request.packageId();
-        RLock lock = redissonClient.getLock(lockKey);
+        // Lock 획득 성공 → 예약 처리
+        User user = userRepository.findById(request.userId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
-        try {
-        // Lock 획득 시도: 최대 5초 대기, 10초 후 자동 해제
-            boolean acquired = lock.tryLock(5, 10, TimeUnit.SECONDS);
+        TravelPackage travelPackage = travelPackageRepository
+                .findById(request.packageId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PACKAGE_NOT_FOUND));
 
-            if (!acquired) {
-                throw new BusinessException(ErrorCode.LOCK_ACQUISITION_FAILED);      
-            }
+        travelPackage.decreaseSeats();
 
-            // Lock 획득 성공 → 예약 처리
-            User user = userRepository.findById(request.userId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+        Booking booking = Booking.builder()
+                .user(user)
+                .travelPackage(travelPackage)
+                .status(BookingStatus.PENDING)
+                .build();
 
-            TravelPackage travelPackage = travelPackageRepository
-                    .findById(request.packageId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.PACKAGE_NOT_FOUND));
-
-            travelPackage.decreaseSeats();
-
-            Booking booking = Booking.builder()
-                    .user(user)
-                    .travelPackage(travelPackage)
-                    .status(BookingStatus.PENDING)
-                    .build();
-
-            return BookingResponse.from(bookingRepository.save(booking));
-
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new BusinessException(ErrorCode.LOCK_INTERRUPTED);
-        } finally {
-            // Lock 해제 (현재 스레드가 Lock을 소유한 경우에만)
-            if (lock.isHeldByCurrentThread()) {
-                lock.unlock();
-            }
-        }
+        return BookingResponse.from(bookingRepository.save(booking));
     }
 }

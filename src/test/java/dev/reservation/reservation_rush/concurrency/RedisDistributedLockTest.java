@@ -22,7 +22,7 @@ import dev.reservation.reservation_rush.entity.User;
 import dev.reservation.reservation_rush.repository.BookingRepository;
 import dev.reservation.reservation_rush.repository.TravelPackageRepository;
 import dev.reservation.reservation_rush.repository.UserRepository;
-import dev.reservation.reservation_rush.service.BookingService;
+import dev.reservation.reservation_rush.service.facade.BookingFacade;
 import dev.reservation.reservation_rush.service.TravelPackageService;
 
 @SpringBootTest
@@ -33,7 +33,7 @@ class RedisDistributedLockTest {
     private TravelPackageService travelPackageService;
 
     @Autowired
-    private BookingService bookingService;
+    private BookingFacade bookingFacade;
 
     @Autowired
     private TravelPackageRepository travelPackageRepository;
@@ -99,7 +99,7 @@ class RedisDistributedLockTest {
                 try {
                     startLatch.await();
                     BookingCreateRequest request = new BookingCreateRequest(userId, packageId);
-                    bookingService.createBookingWithRedisLock(request);
+                    bookingFacade.createBooking(request);
                     successCount.incrementAndGet();
                 } catch (Exception e) {
                     failCount.incrementAndGet();
