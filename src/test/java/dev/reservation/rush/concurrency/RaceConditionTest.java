@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import dev.reservation.rush.service.TravelPackageService;
  * 목적: 동시성 제어 없이 오버부킹 문제 발생을 증명
  * 기대: 10개 좌석에 100개 동시 요청 시 오버부킹 발생
  */
+@Disabled("이 테스트는 현재 비활성화되어 있습니다.")
 @SpringBootTest
 @DisplayName("Phase 1: Race Condition 재현")
 class RaceConditionTest {

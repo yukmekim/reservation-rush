@@ -1,84 +1,130 @@
-# ⚡ Reservation Rush
+# Reservation Rush
 
 [![Java 21](https://img.shields.io/badge/Java-21-orange?style=flat-square)](https://openjdk.org/projects/jdk/21/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.12-brightgreen?style=flat-square)](https://spring.io/projects/spring-boot)
-[![H2 Database](https://img.shields.io/badge/H2-In--Memory-blue?style=flat-square)](http://www.h2database.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
-### 주요 특징
-- **대기열 시스템**: Redis 기반 공정한 대기열 관리
-- **동시성 제어**: 분산 락을 통한 재고 관리
-- **성능 최적화**: Virtual Threads (Java 21) 활용
+동시 요청시 한정된 수량내에서 안정적인 예약 처리를 위한 환경을 테스트합니다.
 
-## 🛠 기술 스택
+## Why Reservation Rush?
 
-### Backend
-- **Java 21** - Virtual Threads를 활용한 고성능 동시 처리
-- **Spring Boot 3.4** - 최신 프레임워크 기반
-- **Spring Data JPA** - 데이터 액세스 추상화
-- **Lombok** - 보일러플레이트 코드 제거
+- **동시성 제어** - Redis 분산 락, Optimistic/Pessimistic Lock을 활용한 재고 관리
+- **고성능 처리** - Java 21 Virtual Threads로 효율적인 동시 요청 처리
+- **재시도 메커니즘** - Spring Retry를 통한 트랜잭션 충돌 해결
+- **API 문서화** - Swagger UI로 즉시 테스트 가능한 REST API
 
-### Database
-- **H2 Database** (개발) - 빠른 개발 환경 구축
-- **Redis** - 대기열
+## Quick Start
 
-### Tools
-- **Gradle 8.x** - 빌드 자동화
+### Prerequisites
 
----
+- Java 21+
+- Gradle 8.x+
+- Redis (선택사항 - 분산 락 테스트 시)
 
-## 🚀 빠른 시작
+### Installation
 
-### 사전 요구사항
-- Java 21 이상
-- Gradle 8.x 이상
-
-### 실행 방법
-
-1. **프로젝트 클론**
+1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/reservation-rush.git
 cd reservation-rush
 ```
 
-2. **애플리케이션 실행**
+2. Run the application
 ```bash
 ./gradlew bootRun
 ```
 
-3. **접속 확인**
+3. Access the application
 ```
-애플리케이션: http://localhost:7010
+Application: http://localhost:7010
+API Docs: http://localhost:7010/swagger-ui.html
 H2 Console: http://localhost:7010/h2-console
 ```
----
 
-## 📁 프로젝트 구조
+## Features
+
+### Concurrency Control
+
+프로젝트는 동시성 문제 해결을 위한 여러 전략을 구현합니다:
+
+- **Optimistic Lock** - JPA `@Version`을 이용한 낙관적 잠금
+- **Pessimistic Lock** - 데이터베이스 레벨의 비관적 잠금
+- **Distributed Lock** - Redis를 활용한 분산 환경 잠금
+
+### API Endpoints
+
+- `POST /api/bookings` - 예약 생성
+- `GET /api/bookings` - 예약 목록 조회
+- `GET /api/packages` - 여행 패키지 조회
+- `POST /api/packages` - 여행 패키지 생성
+
+기본적인 API 명세는 [Swagger UI](http://localhost:7010/swagger-ui.html)에서 확인할 수 있습니다.
+
+## Project Structure
 
 ```
-reservation-rush/
-├── src/
-│   ├── main/
-│   │   ├── java/dev/reservation/ruse/
-│   │   │   ├── entity/          # 엔티티
-│   │   │   ├── enums/            # enum 관리
-│   │   │   ├── repository/      # 데이터 액세스 계층
-│   │   │   ├── service/         # 비즈니스 로직
-│   │   │   ├── controller/      # REST API
-│   │   │   ├── dto/             # 데이터 전송 객체
-│   │   │   └── config/          # 설정 클래스
-│   │   └── resources/
-│   │       ├── application.yml  # 애플리케이션 설정
-│   └── test/                    # 테스트 코드
-├── build.gradle                 # 빌드 설정
-└── README.md
+src/main/java/dev/reservation/rush/
+├── controller/       # REST API 컨트롤러
+├── service/          # 비즈니스 로직
+├── repository/       # 데이터 액세스 계층
+├── entity/           # JPA 엔티티
+├── dto/              # 요청/응답 DTO
+├── config/           # 설정 클래스
+└── common/           # 공통 모듈 (예외처리, 공통 응답 처리)
 ```
 
-## 🧪 테스트
+## Tech Stack
 
-### 단위 테스트 실행
+**Backend**
+- Java 21 (Virtual Threads)
+- Spring Boot 3.4
+- Spring Data JPA
+- Spring Retry
+
+**Database**
+- H2 (In-Memory)
+- Redis (Distributed Lock)
+
+**Documentation**
+- Swagger/OpenAPI 3.0
+
+**Build Tool**
+- Gradle 8.x
+
+## Testing
+
+### Run all tests
 ```bash
 ./gradlew test
 ```
 
----
+### Run concurrency tests
+```bash
+./gradlew test --tests "*concurrency*"
+```
+
+테스트에는 동시성 제어를 검증하는 시나리오가 포함되어 있습니다:
+- Race Condition 테스트
+- Optimistic Lock 테스트
+- Pessimistic Lock 테스트
+- Redis Distributed Lock 테스트
+
+## Configuration
+
+주요 설정은 `src/main/resources/application.yml`에서 관리됩니다:
+
+```yaml
+server:
+  port: 7010
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:reservationdb
+
+  data:
+    redis:
+      host: localhost
+      port: 6479
+```
+
+
