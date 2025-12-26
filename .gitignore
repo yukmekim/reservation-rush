@@ -41,3 +41,7 @@ out/
 
 ### docs ###
 docs/prd
+
+### Environment ###
+.env
+gradle.properties

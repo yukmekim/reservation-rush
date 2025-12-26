@@ -34,6 +34,14 @@ jacocoTestReport {
 
 repositories {
 	mavenCentral()
+
+	maven {
+        url = uri("https://maven.pkg.github.com/yukmekim/observability-starter")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
@@ -51,6 +59,9 @@ dependencies {
 	// SpringDoc OpenAPI 3 (Swagger) - API 문서화
     implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+	// github packages 모니터링 시스템
+    implementation 'dev.observability:observability-starter:0.1.0'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

@@ -48,3 +48,23 @@ logging:
   level:
     root: INFO
     dev.reservation.rush: DEBUG
+
+observability:
+  enabled: true  # 기본값
+  metrics:
+    common-tags:
+      application: reservation-rush
+      environment: dev
+  logging:
+    include-headers: true
+    include-query-string: true
+
+# Actuator 기본 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name:unknown}
