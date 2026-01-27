@@ -1,4 +1,4 @@
-package dev.reservation.rush.config;
+package dev.reservation.rush.initializer;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
