@@ -2,8 +2,8 @@ package dev.reservation.rush.dto.response;
 
 import java.time.LocalDateTime;
 
-import dev.reservation.rush.entity.Booking;
-import dev.reservation.rush.enums.BookingStatus;
+import dev.reservation.rush.domain.Booking;
+import dev.reservation.rush.domain.enums.BookingStatus;
 
 public record BookingResponse(
     Long id,

@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.reservation.rush.common.exception.BusinessException;
 import dev.reservation.rush.common.exception.ErrorCode;
+import dev.reservation.rush.domain.Booking;
+import dev.reservation.rush.domain.TravelPackage;
+import dev.reservation.rush.domain.User;
+import dev.reservation.rush.domain.enums.BookingStatus;
 import dev.reservation.rush.dto.request.BookingCreateRequest;
 import dev.reservation.rush.dto.response.BookingResponse;
-import dev.reservation.rush.entity.Booking;
-import dev.reservation.rush.entity.TravelPackage;
-import dev.reservation.rush.entity.User;
-import dev.reservation.rush.enums.BookingStatus;
 import dev.reservation.rush.repository.BookingRepository;
 import dev.reservation.rush.repository.TravelPackageRepository;
 import dev.reservation.rush.repository.UserRepository;

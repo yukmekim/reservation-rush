@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import dev.reservation.rush.common.exception.BusinessException;
 import dev.reservation.rush.common.exception.ErrorCode;
 import dev.reservation.rush.common.response.PageResponse;
+import dev.reservation.rush.domain.TravelPackage;
 import dev.reservation.rush.dto.request.TravelPackageCreateRequest;
 import dev.reservation.rush.dto.response.TravelPackageResponse;
-import dev.reservation.rush.entity.TravelPackage;
 import dev.reservation.rush.repository.TravelPackageRepository;
 import lombok.RequiredArgsConstructor;
 

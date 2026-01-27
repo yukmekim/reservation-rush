@@ -3,7 +3,7 @@ package dev.reservation.rush.dto.response;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import dev.reservation.rush.entity.TravelPackage;
+import dev.reservation.rush.domain.TravelPackage;
 
 public record TravelPackageResponse(
     Long id,

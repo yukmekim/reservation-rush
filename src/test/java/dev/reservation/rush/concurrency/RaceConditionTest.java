@@ -16,11 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import dev.reservation.rush.domain.User;
 import dev.reservation.rush.dto.request.BookingCreateRequest;
 import dev.reservation.rush.dto.request.TravelPackageCreateRequest;
 import dev.reservation.rush.dto.response.BookingResponse;
 import dev.reservation.rush.dto.response.TravelPackageResponse;
-import dev.reservation.rush.entity.User;
 import dev.reservation.rush.repository.BookingRepository;
 import dev.reservation.rush.repository.TravelPackageRepository;
 import dev.reservation.rush.repository.UserRepository;

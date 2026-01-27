@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import dev.reservation.rush.entity.TravelPackage;
+import dev.reservation.rush.domain.TravelPackage;
 import jakarta.persistence.LockModeType;
 
 @Repository

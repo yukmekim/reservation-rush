@@ -1,4 +1,4 @@
-package dev.reservation.rush.domain;
+package dev.reservation.rush.domain.common;
 
 import java.time.LocalDateTime;
 

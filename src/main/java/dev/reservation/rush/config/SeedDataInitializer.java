@@ -7,8 +7,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import dev.reservation.rush.entity.TravelPackage;
-import dev.reservation.rush.entity.User;
+import dev.reservation.rush.domain.TravelPackage;
+import dev.reservation.rush.domain.User;
 import dev.reservation.rush.repository.TravelPackageRepository;
 import dev.reservation.rush.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

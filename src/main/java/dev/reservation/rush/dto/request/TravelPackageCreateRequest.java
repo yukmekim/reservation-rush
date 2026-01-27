@@ -3,7 +3,7 @@ package dev.reservation.rush.dto.request;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import dev.reservation.rush.entity.TravelPackage;
+import dev.reservation.rush.domain.TravelPackage;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

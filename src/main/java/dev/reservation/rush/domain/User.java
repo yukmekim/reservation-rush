@@ -2,6 +2,7 @@ package dev.reservation.rush.domain;
 
 import org.hibernate.annotations.Comment;
 
+import dev.reservation.rush.domain.common.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

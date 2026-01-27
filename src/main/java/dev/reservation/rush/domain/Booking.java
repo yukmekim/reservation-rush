@@ -4,6 +4,7 @@ import org.hibernate.annotations.Comment;
 
 import dev.reservation.rush.common.exception.BusinessException;
 import dev.reservation.rush.common.exception.ErrorCode;
+import dev.reservation.rush.domain.common.BaseTime;
 import dev.reservation.rush.domain.enums.BookingStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
