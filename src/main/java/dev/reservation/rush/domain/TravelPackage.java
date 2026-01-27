@@ -1,4 +1,4 @@
-package dev.reservation.rush.entity;
+package dev.reservation.rush.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

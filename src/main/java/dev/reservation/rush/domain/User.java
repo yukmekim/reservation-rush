@@ -1,4 +1,4 @@
-package dev.reservation.rush.entity;
+package dev.reservation.rush.domain;
 
 import org.hibernate.annotations.Comment;
 

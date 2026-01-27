@@ -1,10 +1,10 @@
-package dev.reservation.rush.entity;
+package dev.reservation.rush.domain;
 
 import org.hibernate.annotations.Comment;
 
 import dev.reservation.rush.common.exception.BusinessException;
 import dev.reservation.rush.common.exception.ErrorCode;
-import dev.reservation.rush.enums.BookingStatus;
+import dev.reservation.rush.domain.enums.BookingStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
